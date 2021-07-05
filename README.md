@@ -60,3 +60,14 @@ I used `git clone --bare` to create a copy of just the git history of the generi
 This setup works nicely. I was able to `git fetch` from the template repo then merge/rebase the new content into the private specialized repo. And, within the specialized repo I can work normally, doing push/pull operations without needing to specify which remote I'm using.
 
 To pull out improvements from the specialized repo that I would like to see in the generic template I was able to use `git cherry-pick` to pull commits into a new branch, then push that branch to the template repo. I had read that GitHub wouldn't recognize such pushes as being from a fork since the upstream connection is done on my local machine. That was false. I ran `git push upstream` from a `for-upstream` branch and when I went to GitHub I was presented with messages about opening a Pull Request.
+
+### The Full Procedure
+
+1. Create a repo on GitHub. This is your template.
+2. Create an empty repo on GitHub. This will be your fork.
+3. On your local machine: make a bare clone of the template repo.
+4. On your local machine: push the bare clone up to your fork repo. (You may now delete the bare clone from your machine.)
+5. On your local machine: create a normal clone of the fork repo.
+6. From within that clone, add the template repo as an upstream remote.
+7. Do your work.
+
