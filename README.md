@@ -48,5 +48,8 @@ So, am I on a default branch of some kind or not? I've never tried to mess with 
 
 I next tried `git checkout -b main` and again tried to merge the manually created `upstream/main` and got `not something we can merge` again. After a quick glance through the git docs I tried `git branch main --set-upstream-to=upstream/main` and got `fatal: branch 'main' does not exist`.
 
+## Manually Creating a Locally Managed Fork
 
+Lastly, I used `git clone --bare` to create a copy of just the git history of the generic repo and pushed that straight up to the empty specialized repo. With that done I was able to make a normal working clone of the specialized repo and added unique files to both. I next used `git remote add upstream` to point the specialized repo to the generic template repo it was made from.
 
+This setup works nicely. I was able to `git fetch` from the template repo then merge/rebase the new content into the private specialized repo. And, within the specialized repo I can work normally, doing push/pull operations without needing to specify which remote I'm using.
