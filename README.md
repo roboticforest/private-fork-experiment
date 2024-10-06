@@ -63,10 +63,76 @@ To retrieve improvements from the private fork repo that I would like to see in 
 
 # The Full Procedure
 
-1. Create a repo on GitHub. This is your public template project.
-2. Create an *empty* repo on GitHub. This will be your private fork.
-3. On your local machine: make a bare clone of the public GitHub repo.
-4. On your local machine: push the bare clone up to your private fork repo on GitHub. (You may now delete the bare clone from your local machine.)
-5. On your local machine: create a normal clone of the private GitHub fork repo.
-6. From within that clone, add the public GitHub repo as an upstream remote.
-7. Do your work.
+## 1. Create a public repo on GitHub.
+
+This is your public template or boilerplate project. Use GitHub's web interface for this.
+
+## 2. Create an *empty* private repo on GitHub.
+
+This will be your private fork. Again, use GitHub's web interface. **Make sure you do not initialize it with any files (readme, .gitignore, license, and so on).**
+
+The rest of the instructions will happen on your local machine.
+
+## 3. Make a bare clone of the public GitHub repo.
+
+This will only copy the git history and metadata. It won't create the usual working directory.
+
+`git clone --bare git@github.com:username/public-repo.git`
+
+## 4. Push the bare clone up to the private GitHub repo.
+
+```
+cd public-repo.git
+git push --mirror git@github.com:username/private-repo.git
+```
+
+After this, you can delete the bare clone.
+
+```
+cd ..
+rm -rf public-repo.git
+```
+
+## 5. Create a normal clone of the private repo.
+
+```
+git clone git@github.com:username/private-repo.git
+cd private-repo
+```
+
+## 6. Lastly, add the public repo as an upstream remote.
+
+```
+git remote add upstream git@github.com:username/public-repo.git
+git fetch upstream
+```
+
+Running `git remote show` should list:
+
+```
+origin
+upstream
+```
+
+## 7. Do your work.
+
+Now, you can freely work within the private fork as you normally would. Make changes, commit, and push to the private repo on GitHub. To pull in updates from the public repo, you can use `git fetch` and merge or rebase them as needed.
+
+Like so:
+
+```bash
+git fetch upstream main
+git merge upstream/main
+```
+
+## 8. Optional: Pushing changes back from private to public.
+
+If you ever want to contribute changes from your private fork back to the public repo, you can push changes to a new branch and create a pull request.
+
+```bash
+git checkout -b for-upstream
+git cherry-pick <commit-hash>  # Select specific commits if needed
+git push upstream for-upstream
+```
+
+Then, navigate to the public repository on GitHub and handle the Pull Request.
